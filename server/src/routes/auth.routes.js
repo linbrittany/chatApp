@@ -23,4 +23,4 @@ class AuthRoutes {
     }
 }
 
-module.exports = AuthRoutes
+module.exports = AuthRoutes;

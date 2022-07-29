@@ -6,4 +6,4 @@ class GenericException extends HttpException {
     }
 }
 
-module.exports = GenericException
+module.exports = GenericException;

@@ -2,6 +2,7 @@ const { ERRORS } = require("../assets/constants");
 const GenericException = require("../exceptions/generic.exception.js");
 const UserService = require("./user.service");
 const jwt = require("jsonwebtoken");
+const bcrypt = require('bcrypt');
 
 class AuthService {
 
@@ -53,9 +54,9 @@ class AuthService {
     }
 
     validatePassword = (password, hash) => {
-        return password === hash;
+        return bcrypt.compare(password, hash);
     }
 
 }
 
-module.exports = AuthService
+module.exports = AuthService;
