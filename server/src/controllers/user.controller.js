@@ -1,11 +1,13 @@
 const { ERRORS } = require("../assets/constants");
 const GenericException = require("../exceptions/generic.exception.js");
+const AuthService = require("../services/auth.service");
 const UserService = require("../services/user.service")
 
 class UserController {
 
   constructor() {
     this.userService = UserService.getInstance();
+    this.authService = AuthService.getInstance();
   }
 
   createUser = async (req, res, next) => {
@@ -17,7 +19,9 @@ class UserController {
           if (!username || !email || !password) throw new GenericException(ERRORS.BAD_REQUEST.PARAMS);
 
           const user = await this.userService.createUser(username, email, password);
-          return res.status(201).send({user});
+          const login = await this.authService.login(user.email, password);
+          
+          return res.status(201).send(login);
       } catch (error) {
           next(error);
       }

@@ -46,3 +46,12 @@ export const Button = styled.button`
     color: var(--background);
   }
 `;
+
+export const Error = styled.p`
+  font-size: 1em;
+  text-transform: none;
+  color: var(--background);
+  letter-spacing: 0;
+  margin: 0.35rem 0 0.5rem 0;
+  align-self: center;
+`;

@@ -13,10 +13,10 @@ class AuthService {
     }
 
     static getInstance = () => {
-        if (!UserService.instance) {
-            UserService.instance = new UserService();
+        if (!AuthService.instance) {
+            AuthService.instance = new AuthService();
         }
-        return UserService.instance;
+        return AuthService.instance;
     };
 
     login = async (email, password) => {

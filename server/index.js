@@ -25,8 +25,28 @@ mongoose
     console.log(err.message);
   });
 
-app.use("/api/auth/", new AuthRoutes().router);
-app.use("/api/users/", new UserRoutes().router);
+app.use("/v1/auth/", new AuthRoutes().router);
+app.use("/v1/users/", new UserRoutes().router);
+
+// const MongoClient = require('mongodb').MongoClient;
+// var url = "mongodb://localhost:27017/";
+  
+// MongoClient.connect(url, function (err, client) {
+//   if (err) throw err;
+
+//   var db = client.db('chat');
+
+//   db.listCollections().toArray(function(err, names) {   
+//     if(!err) {
+//         console.log(names)
+//     }
+//   });
+
+//   db.collection('users').find({}).toArray(function(err, result) {
+//     if (err) throw err;
+//     console.log(result);
+//   });
+// }); 
 
 const server = app.listen(PORT, () => {
   console.log(`${process.env.NAME} started on ${process.env.PORT}`)
