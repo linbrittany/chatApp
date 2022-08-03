@@ -1,5 +1,5 @@
-import { Page, PageContainer, Request, Title } from "../../GlobalStyles";
-import { Button, Input, Label, Wrapper, Error } from "./styles";
+import { Page, PageContainer, Request, Title, Button } from "../../GlobalStyles";
+import { Input, Label, Wrapper, Error } from "./styles";
 import { useForm } from "react-hook-form";
 import Navbar from "../../components/Navbar";
 import { useAuth } from "../../contexts/UserContext";
@@ -17,42 +17,18 @@ const Register = () => {
 
   const onSubmit = (data) => {
     setError(false);
-    console.log(data)
     userService.register({
       username: data.username,
       email: data.email,
       password: data.password
     }).then((result) => {
-      console.log(result)
       if (result.failure) {
-        setError(true)
+        setError(true);
       } else {
-        auth.login(result.data) 
-        navigate('/')
+        auth.login(result.data); 
+        navigate('/');
       }
     })
-    // userService
-    //   .register({
-    //     username: username,
-    //     email: email,
-    //     password: password
-    //   })
-    //   .then((result) => {
-    //     if (result.hasFailed()) {
-    //       setError(true)
-    //     } else {
-    //       authService
-    //         .login(email, password)
-    //         .then((result) => {
-    //           if (result.hasFailed()) {
-    //             navigate('/')
-    //           } else {
-    //             auth.login(result.getData())
-    //             navigate('/')
-    //           }
-    //         })
-    //     }
-    //   })
   }
 
   return (

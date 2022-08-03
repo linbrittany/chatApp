@@ -28,25 +28,6 @@ export const Input = styled.input`
   width: 90%;
 `;
 
-export const Button = styled.button`
-  background: var(--secondary);
-  color: var(--primary);
-  border-radius:10px;
-  text-align: center;
-  cursor: pointer;
-  border: 1px solid var(--secondary);
-  font-weight: 600;
-  font-size: 18px;
-  padding: 7px 15px;
-  height: fit-content;
-  align-self: center;
-  margin-top: 0.5em;
-
-  &:hover {
-    color: var(--background);
-  }
-`;
-
 export const Error = styled.p`
   font-size: 1em;
   text-transform: none;
