@@ -73,7 +73,7 @@ const Login = () => {
           <Button>Login</Button>
           <Request>
             <p>Don't have an account yet? </p>
-            <button>Sign up</button>
+            <button onClick={() => navigate('/register')}>Sign up</button>
           </Request>
         </Wrapper>
       </PageContainer>

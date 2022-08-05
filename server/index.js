@@ -6,8 +6,7 @@ const socket = require("socket.io");
 const AuthRoutes = require("./src/routes/auth.routes");
 const UserRoutes = require("./src/routes/user.routes");
 const PORT = process.env.PORT || 8080;
-const Room = require('./src/models/room.model');
-const { addUser, getUser, removeUser } = require('./utils');
+const { addUser, getUser, removeUser, getAllUsers } = require('./utils');
 require("dotenv").config();
 
 app.use(cors());
@@ -42,7 +41,7 @@ app.use("/v1/users/", new UserRoutes().router);
 //     }
 //   });
 
-//   db.collection('users').find({}).toArray(function(err, result) {
+//   db.collection('messages').find({}).toArray(function(err, result) {
 //     if (err) throw err;
 //     console.log(result);
 //   });
@@ -59,58 +58,38 @@ const io = socket(server, {
   },
 });
 
-io.on('connection', (socket) => {
-  console.log(socket.id);
-  Room.find().then(result => {
-    socket.emit('output-rooms', result)
-  })
-  
-  socket.on('create-room', name => {
-      const room = new Room({ name });
-      room.save().then(result => {
-          io.emit('room-created', result)
-      })
-  })
+global.onlineUsers = new Map();
+io.on("connection", (socket) => {
+  global.chatSocket = socket;
 
-  socket.on('join', ({ name, roomId, userId }) => {
-      const { error, user } = addUser({
-          socketId: socket.id,
-          name,
-          roomId,
-          userId
-      })
-      socket.join(roomId);
-      if (error) {
-          console.log('join error', error)
-      } else {
-          console.log('join user', user)
-      }
-  })
+  socket.on("connect", (name, userId) => {
+    const { error, user } = addUser({
+      socketId: socket.id,
+      name,
+      userId
+    })
 
-  socket.on('sendMessage', (message, roomId, callback) => {
-      const user = getUser(socket.id);
-      const newMessage = {
-          name: user.name,
-          userId: user.userId,
-          roomId,
-          text: message
-      }
-      console.log('message', newMessage)
-      const msg = new Message(newMessage);
-      msg.save().then(result => {
-          io.to(roomId).emit('message', result);
-          callback()
-      })
+    if (error) {
+        console.log('error connecting user', error)
+    } else {
+        console.log('user connected', user)
+    }
+  });
 
-  })
+  socket.on("getUsers", () => {
+    const activeUsers = getAllUsers();
+    socket.emit("activeUsers", activeUsers);
+  });
 
-  socket.on('get-messages-history', roomId => {
-      Message.find({ roomId }).then(result => {
-          socket.emit('output-messages', result)
-      })
-  })
+  socket.on("sendMessage", (socketId) => {
+    const sendUserSocket = getUser(socketId);
+    if (sendUserSocket) {
+      socket.to(sendUserSocket).emit("received", data.msg);
+    }
+  });
 
   socket.on('disconnect', () => {
-      removeUser(socket.id);
+    removeUser(socket.id);
   })
+
 });

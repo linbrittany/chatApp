@@ -5,7 +5,11 @@ const MessageSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    userId: {
+    from: {
+        type: String,
+        required: true
+    },
+    to: {
         type: String,
         required: true
     },
@@ -13,10 +17,10 @@ const MessageSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    roomId: {
+    chatId: {
         type: String,
         required: true
-    },
+    }
 }, { timestamps: true })
 
 module.exports = mongoose.model("Messages", MessageSchema);

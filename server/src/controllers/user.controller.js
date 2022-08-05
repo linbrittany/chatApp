@@ -1,7 +1,7 @@
 const { ERRORS } = require("../assets/constants");
 const GenericException = require("../exceptions/generic.exception.js");
 const AuthService = require("../services/auth.service");
-const UserService = require("../services/user.service")
+const UserService = require("../services/user.service");
 
 class UserController {
 

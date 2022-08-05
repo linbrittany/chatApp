@@ -94,7 +94,7 @@ const Register = () => {
           <Button>Register</Button>
           <Request>
             <p>Already have an account? </p>
-            <button>Login</button>
+            <button onClick={() => navigate('/login')}>Login</button>
           </Request>
         </Wrapper>
       </PageContainer>
