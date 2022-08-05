@@ -1,10 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { v4 as uuidv4 } from "uuid";
-import axios from "axios";
-// import { sendMessageRoute, recieveMessageRoute } from "../utils/APIRoutes";
 import { MainContainer } from "./styles";
 
-const Messages = ({ currentRoom, socket }) => {
+const Messages = ({ currentRoom, socket, user }) => {
   const [messages, setMessages] = useState([]);
   const scrollRef = useRef();
   const [arrivalMessage, setArrivalMessage] = useState(null);
@@ -73,7 +71,7 @@ const Messages = ({ currentRoom, socket }) => {
         return (
           <div ref={scrollRef} key={uuidv4()}>
             <div
-              className={`message ${message.fromSelf ? "sended" : "received"}`}
+              className={`message ${message.from === user._id ? "sended" : "received"}`}
             >
               <div className="content ">
                 <p>{message.message}</p>

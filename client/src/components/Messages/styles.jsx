@@ -1,11 +1,11 @@
 import styled from "styled-components";
 
 export const MainContainer = styled.div`
-  padding: 1rem 2rem;
   display: flex;
   flex-direction: column;
   gap: 1rem;
   overflow: auto;
+  height: 93%;
   &::-webkit-scrollbar {
     width: 0.2rem;
     &-thumb {

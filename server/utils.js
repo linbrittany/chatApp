@@ -20,8 +20,8 @@ const removeUser = (socketId) => {
 
 const getUser = (socketId) => activeUsers.find(user => user.socketId === socketId);
 
-const getAllUsers = () => {
-    return activeUsers
+const getAllUsers = (userId) => {
+    return activeUsers.filter(user => user.userId !== userId);
 }
 
 module.exports = { addUser, removeUser, getUser, getAllUsers };

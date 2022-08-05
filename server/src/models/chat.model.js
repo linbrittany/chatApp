@@ -1,7 +1,9 @@
 const mongoose = require('mongoose');
 
 const ChatShema = new mongoose.Schema({
-    users: [String]
+    users: {
+        type: [String]
+    }
 })
 
 module.exports = mongoose.model("Chats", ChatShema);

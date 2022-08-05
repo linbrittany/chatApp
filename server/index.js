@@ -8,7 +8,7 @@ const UserRoutes = require("./src/routes/user.routes");
 const ChatRoutes = require("./src/routes/chat.routes");
 const MessageRoutes = require("./src/routes/message.routes");
 const PORT = process.env.PORT || 8080;
-const { addUser, getUser, removeUser, getAllUsers } = require('./utils');
+const { addUser, getUser, removeUser, getAllUsers } = require("./utils");
 require("dotenv").config();
 
 app.use(cors());
@@ -33,13 +33,13 @@ app.use("/v1/messages/", new MessageRoutes().router);
 
 // const MongoClient = require('mongodb').MongoClient;
 // var url = "mongodb://localhost:27017/";
-  
+
 // MongoClient.connect(url, function (err, client) {
 //   if (err) throw err;
 
 //   var db = client.db('chat');
 
-//   db.listCollections().toArray(function(err, names) {   
+//   db.listCollections().toArray(function(err, names) {
 //     if(!err) {
 //         console.log(names)
 //     }
@@ -49,11 +49,11 @@ app.use("/v1/messages/", new MessageRoutes().router);
 //     if (err) throw err;
 //     console.log(result);
 //   });
-// }); 
+// });
 
 const server = app.listen(PORT, () => {
-  console.log(`${process.env.NAME} started on ${process.env.PORT}`)
-})
+  console.log(`${process.env.NAME} started on ${process.env.PORT}`);
+});
 
 const io = socket(server, {
   cors: {
@@ -62,27 +62,24 @@ const io = socket(server, {
   },
 });
 
-global.onlineUsers = new Map();
 io.on("connection", (socket) => {
-  global.chatSocket = socket;
-
-  socket.on("connect", (name, userId) => {
+  socket.on("addUser", (name, userId) => {
     const { error, user } = addUser({
       socketId: socket.id,
       name,
-      userId
-    })
+      userId,
+    });
 
     if (error) {
-        console.log('error connecting user', error)
+      console.log("error connecting user", error);
     } else {
-        console.log('user connected', user)
+      console.log("user connected", user);
     }
   });
 
-  socket.on("getUsers", () => {
-    const activeUsers = getAllUsers();
-    socket.emit("activeUsers", activeUsers);
+  socket.on("getUsers", (userId) => {
+    const activeUsers = getAllUsers(userId);
+    socket.emit("outputUsers", activeUsers);
   });
 
   socket.on("sendMessage", (socketId) => {
@@ -92,8 +89,7 @@ io.on("connection", (socket) => {
     }
   });
 
-  socket.on('disconnect', () => {
+  socket.on("disconnect", () => {
     removeUser(socket.id);
-  })
-
+  });
 });

@@ -15,7 +15,7 @@ export const METHODS = {
   DELETE: 3
 }
 
-export const URL = "http://localhost:8080/"
+export const HOST = "http://localhost:8080/"
 
 export const PATHS = {
   AUTH: "v1/auth",

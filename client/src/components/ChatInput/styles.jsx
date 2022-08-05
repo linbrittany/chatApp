@@ -13,7 +13,7 @@ export const Container = styled.div`
 
 export const InputContainer = styled.form`
   width: 100%;
-  border-radius: 2rem;
+  border-radius: 0.625rem;
   display: flex;
   align-items: center;
   gap: 2rem;
@@ -21,7 +21,7 @@ export const InputContainer = styled.form`
   
   input {
     width: 90%;
-    height: 60%;
+    height: 35px;
     background-color: transparent;
     color: white;
     border: none;

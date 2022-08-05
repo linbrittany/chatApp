@@ -2,24 +2,49 @@ import styled from "styled-components";
 
 export const ChatContainer = styled.div`
   width: 60vw;
-  height: 70vh;
+  height: 575px;
   display: flex;
 `;
 
-export const MainContainer = styled.div`
+export const WelcomeContainer = styled.div`
   display: flex;
+  flex-direction: column;
   width: 70%;
   height: 100%;
   border-top-right-radius: 0.625em;
   background-color: var(--secondary);
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1em;
+  gap: 2em;
+
+  h2 {
+    color: var(--background);
+    font-size: var(--fontExtraLarge);
+  }
+
+  img {
+    width: 70%;
+  }
 `;
 
-export const RoomsContainer = styled.div`
+export const MainContainer = styled.div`
   display: flex;
-  width: 30%;
   flex-direction: column;
+  width: 70%;
   height: 100%;
+  border-top-right-radius: 0.625em;
+  background-color: var(--secondary);
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1em;
+`;
+
+export const UsersContainer = styled.div`
+  display: grid;
+  grid-template-rows: 10% 81% 9%;
+  overflow: hidden;
 `;
 
 export const Header = styled.div`
@@ -46,7 +71,7 @@ export const Header = styled.div`
   }
 `;
 
-export const RoomsList = styled.div`
+export const UsersList = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -63,7 +88,7 @@ export const RoomsList = styled.div`
     }
   }
 
-  .room {
+  .user {
     background-color: var(--primary);
     min-height: 5rem;
     cursor: pointer;
@@ -79,6 +104,7 @@ export const RoomsList = styled.div`
       color: var(--background);
     }
   }
+
   .selected {
     background-color: var(--secondary);
 
