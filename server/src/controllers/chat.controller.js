@@ -1,12 +1,10 @@
 const { ERRORS } = require("../assets/constants");
 const GenericException = require("../exceptions/generic.exception.js");
-const AuthService = require("../services/auth.service");
 const ChatService = require("../services/chat.service");
 
 class ChatController {
   constructor() {
     this.chatService = ChatService.getInstance();
-    this.authService = AuthService.getInstance();
   }
 
   createChat = async (req, res, next) => {

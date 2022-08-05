@@ -19,6 +19,10 @@ class ChatService {
       },
     });
   };
+
+  getChatById = async (chatId) => {
+    return await chatModel.findOne({_id: chatId});
+  }
 }
 
 module.exports = ChatService;
