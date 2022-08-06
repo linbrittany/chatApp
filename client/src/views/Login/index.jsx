@@ -7,8 +7,6 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getQuery, useQuery } from "../../hooks/useQuery";
 import { authService } from "../../services";
-import { io } from "socket.io-client";
-import { HOST } from "../../assets/constants";
 
 const EMAIL_PATTERN = /^$|^[a-zA-Z0-9_!#$%&’*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$/;
 
@@ -19,14 +17,9 @@ const Login = () => {
   let navigate = useNavigate();
   let query = useQuery();
   let errorStatus = getQuery(query, "code", undefined);
-  let socket = useRef();
 
   useEffect(() => {
-    if (errorStatus) {
-      auth.logout();
-      socket.current = io(HOST);
-      socket.current.emit("removeUser");
-    }
+    errorStatus && auth.logout();
   }, []) 
 
   const onSubmit = (data) => {

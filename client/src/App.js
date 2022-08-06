@@ -7,6 +7,7 @@ import Chat from "./views/Chat/index";
 import Error from "./views/Error";
 import Login from "./views/Login/index";
 import Register from "./views/Register/index";
+import Rooms from "./views/Rooms";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <GlobalStyles/>
         <Routes>
           <Route path="/" element={<Chat/>}/>
+          <Route path="/rooms" element={<Rooms/>}/>
           <Route path="/register" element={<Register/>}/>
           <Route path="/login" element={<Login/>}/>
           <Route path="/error" element={<Error/>}/>

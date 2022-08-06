@@ -25,6 +25,42 @@ class RoomController {
     }
   };
 
+  getRoomsFromUser = async (req, res, next) => {
+    const userId = req.params.userId;
+
+    try {
+      if (!userId) throw new GenericException(ERRORS.BAD_REQUEST.PARAMS);
+
+      const maybeUser = await this.userService.getUserById(userId);
+      if (!maybeUser) throw new GenericException(ERRORS.NOT_FOUND.USER);
+
+      const rooms = await this.roomService.getRoomsFromUser(userId);
+      const prettyRooms = rooms.map(room => this.roomService.prettyRoom(room));
+
+      return res.status(200).send({ rooms: prettyRooms });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  getRoomsAvailable = async (req, res, next) => {
+    const userId = req.params.userId;
+
+    try {
+      if (!userId) throw new GenericException(ERRORS.BAD_REQUEST.PARAMS);
+
+      const maybeUser = await this.userService.getUserById(userId);
+      if (!maybeUser) throw new GenericException(ERRORS.NOT_FOUND.USER);
+
+      const rooms = await this.roomService.getRoomsAvailable(userId);
+      const prettyRooms = rooms.map(room => this.roomService.prettyRoom(room));
+
+      return res.status(200).send({ rooms: prettyRooms });
+    } catch (error) {
+      next(error);
+    }
+  }
+
   addUserToRoom = async (req, res, next) => {
     const { roomId, userId } = req.body;
 

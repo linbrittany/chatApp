@@ -18,8 +18,6 @@ const NavContainer = styled.nav`
 
 const LogoContainer = styled.nav`
   width: fit-content;
-  /* background: var(--primary);
-  color: var(--background); */
   display: flex;
   align-items: center;
   justify-content: center;

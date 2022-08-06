@@ -5,28 +5,26 @@ import { useAuth } from "../../contexts/UserContext";
 import { Page, PageContainer } from "../../GlobalStyles";
 import {
   ChatContainer,
-  Foot,
-  Header,
   MainContainer,
-  UsersContainer,
-  UsersList,
   WelcomeContainer,
 } from "./styles";
 import ChatInput from "../../components/ChatInput/index";
 import Messages from "../../components/Messages";
+import Welcome from "../../assets/images/hello.gif";
+import { roomService } from "../../services";
+import { handleError } from "../../handlers/ErrorHandler";
 import { io } from "socket.io-client";
 import { HOST } from "../../assets/constants";
-import Welcome from "../../assets/images/hello.gif";
-import addIcon from "../../assets/images/add.png";
+import RoomsList from "../../components/RoomsList";
 
 const Chat = () => {
   const { login, user } = useAuth();
-  const [currentChat, setCurrentChat] = useState(null);
-  const [users, setUsers] = useState([]);
+  const [currentRoom, setCurrentRoom] = useState(null);
+  const [rooms, setRooms] = useState([]);
   const currUser = localStorage.getItem("user");
   const token = localStorage.getItem("token");
-  let navigate = useNavigate();
   const socket = useRef();
+  let navigate = useNavigate();
 
   useEffect(() => {
     if (currUser && currUser !== "") {
@@ -42,54 +40,37 @@ const Chat = () => {
 
   useEffect(() => {
     if (user) {
-      socket.current = io(HOST);
-      socket.current.emit("addUser", user.username, user.userId);
-      socket.current.emit("getUsers", user.userId);
-      socket.current.on("outputUsers", (users) => {
-        setUsers(users);
+      roomService.getRoomsFromUser(user.userId).then((res) => {
+        res.failure
+          ? handleError(res.status, navigate)
+          : setRooms(res.data.rooms);
       });
+      socket.current = io(HOST);
     }
   }, [user]);
 
-  const changeCurrentChat = (userId) => {
-    setCurrentChat(userId);
-  };
+  // const changeCurrentRoom = (room) => {
+  //   setCurrentRoom(room);
+  // };
 
   return (
     <Page>
-      <Navbar isAuth={true}/>
+      <Navbar isAuth={true} />
       <PageContainer>
         <ChatContainer>
-          <UsersContainer>
-            <Header>
-              <h2>Rooms</h2>
-              <img src={addIcon} alt="add icon"/>
-            </Header>
-            <UsersList>
-              {users.map((user) => {
-                return (
-                  <div
-                    key={user.userId}
-                    className={`user ${
-                      user.userId === currentChat ? "selected" : ""
-                    }`}
-                    onClick={() => changeCurrentChat(user.userId)}
-                  >
-                    <h3>{user.name}</h3>
-                  </div>
-                );
-              })}
-            </UsersList>
-            <Foot>{user && <h2>{user.username}</h2>}</Foot>
-          </UsersContainer>
-          {user && (currentChat ? <MainContainer>
-            <Messages receiver={currentChat} socket={socket} user={user}/>
-            <ChatInput />
-          </MainContainer> :
-          <WelcomeContainer>
-            <img src={Welcome} alt="welcome gif"/>
-            <h2>Welcome {user.username}!</h2>
-          </WelcomeContainer>)}
+          <RoomsList rooms={rooms} currentRoom={currentRoom} setter={setCurrentRoom}/>
+          {user &&
+            (currentRoom ? (
+              <MainContainer>
+                <Messages room={currentRoom} socket={socket} user={user} />
+                <ChatInput />
+              </MainContainer>
+            ) : (
+              <WelcomeContainer>
+                <img src={Welcome} alt="welcome gif" />
+                <h2>Welcome {user.username}!</h2>
+              </WelcomeContainer>
+            ))}
         </ChatContainer>
       </PageContainer>
     </Page>

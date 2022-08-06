@@ -15,6 +15,21 @@ class RoomService {
     });
   };
 
+  getRoomsFromUser = async (userId) => {
+    return await roomModel.find({ users: userId });
+  }
+
+  getRoomsAvailable = async (userId) => {
+    return await roomModel.find({ users: {$ne: userId} });
+  }
+
+  prettyRoom = (room) => {
+    return {
+      roomId: room._id,
+      name: room.name
+    }
+  }
+
   addUserToRoom = async (roomId, userId) => {
     return await roomModel.findOneAndUpdate(
       { _id: roomId },

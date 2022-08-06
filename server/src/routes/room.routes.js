@@ -21,6 +21,8 @@ class RoomRoutes {
 
         this.router.post('/', userMiddleware, this.controller.createRoom);
         this.router.post('/new-user/', userMiddleware, this.controller.addUserToRoom);
+        this.router.get('/:userId', userMiddleware, this.controller.getRoomsFromUser);
+        this.router.get('/:userId/available', userMiddleware, this.controller.getRoomsAvailable);
     }
 }
 

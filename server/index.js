@@ -7,7 +7,7 @@ const AuthRoutes = require("./src/routes/auth.routes");
 const UserRoutes = require("./src/routes/user.routes");
 const MessageRoutes = require("./src/routes/message.routes");
 const PORT = process.env.PORT || 8080;
-const { addUser, getUser, removeUser, getAllUsers } = require("./utils");
+const { addUser, getUser, removeUser } = require("./utils");
 const RoomRoutes = require("./src/routes/room.routes");
 require("dotenv").config();
 
@@ -63,11 +63,12 @@ const io = socket(server, {
 });
 
 io.on("connection", (socket) => {
-  socket.on("addUser", (name, userId) => {
+  socket.on("USER-CONNECT", (name, userId, roomId) => {
     const { error, user } = addUser({
       socketId: socket.id,
       name,
       userId,
+      roomId
     });
 
     if (error) {
@@ -77,19 +78,17 @@ io.on("connection", (socket) => {
     }
   });
 
-  socket.on("getUsers", (userId) => {
-    const activeUsers = getAllUsers(userId);
-    socket.emit("outputUsers", activeUsers);
+  socket.on("MSG-SEND", (message, roomId, callback) => {
+    const user = getUser(socket.id);
+    io.to(roomId).emit('MSG-RECEIVE', {
+      name: user.name,
+      roomId: roomId,
+      message: message
+    });
+    callback();
   });
 
-  socket.on("sendMessage", (socketId) => {
-    const sendUserSocket = getUser(socketId);
-    if (sendUserSocket) {
-      socket.to(sendUserSocket).emit("received", data.msg);
-    }
-  });
-
-  socket.on("removeUser", () => {
+  socket.on("disconnect", () => {
     removeUser(socket.id);
   });
 });

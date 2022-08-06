@@ -38,7 +38,14 @@ class MessageController {
       if (!roomId) throw new GenericException(ERRORS.BAD_REQUEST.PARAMS);
 
       const messages = await this.messageService.getMessagesFromRoom(roomId);
-      return res.status(200).send({ messages });
+      const formattedMessages = messages.map(msg => {
+        return {
+          sender: msg.from.name,
+          message: msg.message,
+          roomId: msg.roomId
+        }
+      })
+      return res.status(200).send({ messages: formattedMessages });
     } catch (error) {
       next(error);
     }

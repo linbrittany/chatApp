@@ -20,5 +20,6 @@ export const HOST = "http://localhost:8080/"
 export const PATHS = {
   AUTH: "v1/auth",
   USERS: "v1/users",
-  MESSAGES: "v1/messages"
+  MESSAGES: "v1/messages",
+  ROOMS: "v1/rooms"
 }

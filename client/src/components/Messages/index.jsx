@@ -5,21 +5,25 @@ import { messageService } from "../../services";
 import { handleError } from "../../handlers/ErrorHandler";
 import { useNavigate } from "react-router-dom";
 
-const Messages = ({ receiver, socket, user }) => {
+const Messages = ({ room, socket, user }) => {
   const [messages, setMessages] = useState([]);
   const scrollRef = useRef();
   const [arrivalMessage, setArrivalMessage] = useState(null);
   let navigate = useNavigate();
 
   useEffect(() => {
-    messageService.getMessagesFromUsers({
-      from: receiver,
-      to: user.userId
-    }).then(res => {
-      console.log(res);
-      res.failure ? handleError(res.status, navigate) : setMessages(res.data);
-    })
-  }, [receiver]);
+    socket.current.emit("USER-CONNECT", room.name, user.userId, room.roomId);
+  }, [room]);
+
+  // useEffect(() => {
+  //   messageService.getMessagesFromUsers({
+  //     from: receiver,
+  //     to: user.userId
+  //   }).then(res => {
+  //     console.log(res);
+  //     res.failure ? handleError(res.status, navigate) : setMessages(res.data);
+  //   })
+  // }, [receiver]);
 
   // useEffect(() => {
   //   const getCurrentChat = async () => {
@@ -74,7 +78,7 @@ const Messages = ({ receiver, socket, user }) => {
         return (
           <div ref={scrollRef} key={uuidv4()}>
             <div
-              className={`message ${message.from === user._id ? "sended" : "received"}`}
+              className={`message ${message.from.userId === user.userId ? "sended" : "received"}`}
             >
               <div className="content ">
                 <p>{message.message}</p>

@@ -1,11 +1,11 @@
 const activeUsers = [];
 
-const addUser = ({ socketId, name, userId }) => {
-    const exist = activeUsers.find(user => user.userId === userId);
+const addUser = ({ socketId, name, userId, roomId }) => {
+    const exist = activeUsers.find(user => user.roomId === roomId && user.userId === userId);
     if (exist) {
         return { error: 'User already exist in this room' }
     }
-    const user = { socketId, name, userId };
+    const user = { socketId, name, userId, roomId };
     activeUsers.push(user)
     console.log('Users list', activeUsers)
     return { user }
@@ -20,8 +20,4 @@ const removeUser = (socketId) => {
 
 const getUser = (socketId) => activeUsers.find(user => user.socketId === socketId);
 
-const getAllUsers = (userId) => {
-    return activeUsers.filter(user => user.userId !== userId);
-}
-
-module.exports = { addUser, removeUser, getUser, getAllUsers };
+module.exports = { addUser, removeUser, getUser };
