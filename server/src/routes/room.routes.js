@@ -1,13 +1,13 @@
 const bodyParser = require('body-parser');
 const cors = require("cors");
 const { userMiddleware } = require("../middlewares/user.middleware");
-const ChatController = require("../controllers/chat.controller");
+const RoomController = require("../controllers/room.controller");
 
-class ChatRoutes {
+class RoomRoutes {
 
     constructor() {
       this.router = require('express').Router();
-      this.controller = new ChatController();
+      this.controller = new RoomController();
       this.init();
     }
 
@@ -19,9 +19,9 @@ class ChatRoutes {
         );
         this.router.use(cors());
 
-        this.router.post('/', userMiddleware, this.controller.createChat);
-        this.router.get('/', userMiddleware, this.controller.getChatFromUsers);
+        this.router.post('/', userMiddleware, this.controller.createRoom);
+        this.router.post('/new-user/', userMiddleware, this.controller.addUserToRoom);
     }
 }
 
-module.exports = ChatRoutes;
+module.exports = RoomRoutes;

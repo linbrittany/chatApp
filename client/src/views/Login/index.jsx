@@ -3,23 +3,30 @@ import { Input, Label, Wrapper, Error } from "./styles";
 import { useForm } from "react-hook-form";
 import Navbar from "../../components/Navbar";
 import { useAuth } from "../../contexts/UserContext";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getQuery, useQuery } from "../../hooks/useQuery";
 import { authService } from "../../services";
+import { io } from "socket.io-client";
+import { HOST } from "../../assets/constants";
 
 const EMAIL_PATTERN = /^$|^[a-zA-Z0-9_!#$%&’*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$/;
 
 const Login = () => {
-  const { register, formState: {errors}, handleSubmit, getValues} = useForm();
+  const { register, formState: {errors}, handleSubmit} = useForm();
   const [error, setError] = useState(false);
   let auth = useAuth();
   let navigate = useNavigate();
   let query = useQuery();
   let errorStatus = getQuery(query, "code", undefined);
+  let socket = useRef();
 
   useEffect(() => {
-    errorStatus && auth.logout();
+    if (errorStatus) {
+      auth.logout();
+      socket.current = io(HOST);
+      socket.current.emit("removeUser");
+    }
   }, []) 
 
   const onSubmit = (data) => {

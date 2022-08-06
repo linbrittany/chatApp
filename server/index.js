@@ -5,10 +5,10 @@ const app = express();
 const socket = require("socket.io");
 const AuthRoutes = require("./src/routes/auth.routes");
 const UserRoutes = require("./src/routes/user.routes");
-const ChatRoutes = require("./src/routes/chat.routes");
 const MessageRoutes = require("./src/routes/message.routes");
 const PORT = process.env.PORT || 8080;
 const { addUser, getUser, removeUser, getAllUsers } = require("./utils");
+const RoomRoutes = require("./src/routes/room.routes");
 require("dotenv").config();
 
 app.use(cors());
@@ -28,8 +28,8 @@ mongoose
 
 app.use("/v1/auth/", new AuthRoutes().router);
 app.use("/v1/users/", new UserRoutes().router);
-app.use("/v1/chat/", new ChatRoutes().router);
 app.use("/v1/messages/", new MessageRoutes().router);
+app.use("/v1/rooms/", new RoomRoutes().router);
 
 // const MongoClient = require('mongodb').MongoClient;
 // var url = "mongodb://localhost:27017/";
@@ -89,7 +89,7 @@ io.on("connection", (socket) => {
     }
   });
 
-  socket.on("disconnect", () => {
+  socket.on("removeUser", () => {
     removeUser(socket.id);
   });
 });

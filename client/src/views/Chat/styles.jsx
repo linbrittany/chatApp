@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const ChatContainer = styled.div`
   width: 60vw;
-  height: 575px;
+  height: 500px;
   display: flex;
 `;
 
@@ -45,6 +45,7 @@ export const UsersContainer = styled.div`
   display: grid;
   grid-template-rows: 10% 81% 9%;
   overflow: hidden;
+  width: 30%;
 `;
 
 export const Header = styled.div`

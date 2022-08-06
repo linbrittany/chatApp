@@ -6,7 +6,7 @@ exports.ERRORS = {
   NOT_FOUND: {
       GENERAL: { status: 404, internalStatus: 'NOT_FOUND', message: 'Not found.' },
       USER: { status: 404, internalStatus: 'USER', message: 'User not found.' },
-      CHAT: { status: 404, internalStatus: 'CHAT', message: 'Chat not found.' },
+      ROOM: { status: 404, internalStatus: 'ROOM', message: 'Room not found.' },
   },
   FORBIDDEN: {
       GENERAL: { status: 403, internalStatus: 'FORBIDDEN', message: 'Forbidden.' },

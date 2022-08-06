@@ -9,13 +9,13 @@ class MessageService {
     return MessageService.instance;
   };
 
-  addMessage = async ( from, to, text, chatId ) => {
-    return await messageModel.create({ from, to, text, chatId });
+  addMessage = async ( from, to, text, roomId ) => {
+    return await messageModel.create({ from, to, text, roomId });
   };
 
-  getMessagesFromChat = async (chatId) => {
+  getMessagesFromRoom = async (roomId) => {
     return await messageModel.find({
-      chatId: chatId
+      roomId: roomId
     }).sort({ updatedAt: 1 });
   };
 }

@@ -20,7 +20,7 @@ class MessageRoutes {
         this.router.use(cors());
 
         this.router.post('/', userMiddleware, this.controller.addMessage);
-        this.router.get('/:chatId', userMiddleware, this.controller.getMessagesFromChat);
+        this.router.get('/:roomId', userMiddleware, this.controller.getMessagesFromRoom);
     }
 }
 

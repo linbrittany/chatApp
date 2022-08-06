@@ -1,40 +1,43 @@
 const { ERRORS } = require("../assets/constants");
 const GenericException = require("../exceptions/generic.exception.js");
 const MessageService = require("../services/message.service");
-const ChatService = require("../services/chat.service");
+const RoomService = require("../services/room.service");
+const UserService = require("../services/user.service");
 
 class MessageController {
   constructor() {
     this.messageService = MessageService.getInstance();
-    this.chatService = ChatService.getInstance();
+    this.userService = UserService.getInstance();
+    this.roomService = RoomService.getInstance();
   }
 
   addMessage = async (req, res, next) => {
-    const { from, to, text, chatId } = req.body;
+    const { from, to, text, roomId } = req.body;
 
     try {
-      if (!from || !to || !text || !chatId) throw new GenericException(ERRORS.BAD_REQUEST.PARAMS);
+      if (!from || !to || !text || !roomId) throw new GenericException(ERRORS.BAD_REQUEST.PARAMS);
 
-      const maybeChat = await this.chatService.getChatById(chatId);
-      if (!maybeChat) throw new GenericException(ERRORS.BAD_REQUEST.PARAMS);
+      const maybeFrom = await this.userService.getUserById(from);
+      const maybeTo = await this.userService.getUserById(to);
+      if (!maybeFrom || !maybeTo) throw new GenericException(ERRORS.NOT_FOUND.USER);
 
-      const newMessage = await this.messageService.addMessage(from, to, text, chatId);
+      const maybeRoom = await this.roomService.getRoomById(roomId);
+      if(!maybeRoom) throw new GenericException(ERRORS.NOT_FOUND.ROOM);
+
+      const newMessage = await this.messageService.addMessage(from, to, text, roomId);
       return res.status(200).send({ newMessage });
     } catch (error) {
       next(error);
     }
   };
 
-  getMessagesFromChat = async (req, res, next) => {
-    const { chatId } = req.body;
+  getMessagesFromRoom = async (req, res, next) => {
+    const roomId = req.params.roomId;
 
     try {
-      if (!chatId) throw new GenericException(ERRORS.BAD_REQUEST.PARAMS);
+      if (!roomId) throw new GenericException(ERRORS.BAD_REQUEST.PARAMS);
 
-      const maybeChat = await this.chatService.getChatById(chatId);
-      if (!maybeChat) throw new GenericException(ERRORS.BAD_REQUEST.PARAMS);
-
-      const messages = await this.messageService.getMessagesFromChat(chatId);
+      const messages = await this.messageService.getMessagesFromRoom(roomId);
       return res.status(200).send({ messages });
     } catch (error) {
       next(error);

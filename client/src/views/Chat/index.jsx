@@ -17,6 +17,7 @@ import Messages from "../../components/Messages";
 import { io } from "socket.io-client";
 import { HOST } from "../../assets/constants";
 import Welcome from "../../assets/images/hello.gif";
+import addIcon from "../../assets/images/add.png";
 
 const Chat = () => {
   const { login, user } = useAuth();
@@ -50,8 +51,8 @@ const Chat = () => {
     }
   }, [user]);
 
-  const changeCurrentChat = (index, room) => {
-    setCurrentChat(index);
+  const changeCurrentChat = (userId) => {
+    setCurrentChat(userId);
   };
 
   return (
@@ -61,7 +62,8 @@ const Chat = () => {
         <ChatContainer>
           <UsersContainer>
             <Header>
-              <h2>Users Online</h2>
+              <h2>Rooms</h2>
+              <img src={addIcon} alt="add icon"/>
             </Header>
             <UsersList>
               {users.map((user) => {
@@ -81,7 +83,7 @@ const Chat = () => {
             <Foot>{user && <h2>{user.username}</h2>}</Foot>
           </UsersContainer>
           {user && (currentChat ? <MainContainer>
-            <Messages />
+            <Messages receiver={currentChat} socket={socket} user={user}/>
             <ChatInput />
           </MainContainer> :
           <WelcomeContainer>

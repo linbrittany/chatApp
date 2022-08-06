@@ -1,22 +1,25 @@
 import React, { useState, useEffect, useRef } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { MainContainer } from "./styles";
+import { messageService } from "../../services";
+import { handleError } from "../../handlers/ErrorHandler";
+import { useNavigate } from "react-router-dom";
 
-const Messages = ({ currentRoom, socket, user }) => {
+const Messages = ({ receiver, socket, user }) => {
   const [messages, setMessages] = useState([]);
   const scrollRef = useRef();
   const [arrivalMessage, setArrivalMessage] = useState(null);
+  let navigate = useNavigate();
 
-  // useEffect(async () => {
-  //   const data = await JSON.parse(
-  //     localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)
-  //   );
-  //   const response = await axios.post(recieveMessageRoute, {
-  //     from: data._id,
-  //     to: currentRoom._id,
-  //   });
-  //   setMessages(response.data);
-  // }, [currentRoom]);
+  useEffect(() => {
+    messageService.getMessagesFromUsers({
+      from: receiver,
+      to: user.userId
+    }).then(res => {
+      console.log(res);
+      res.failure ? handleError(res.status, navigate) : setMessages(res.data);
+    })
+  }, [receiver]);
 
   // useEffect(() => {
   //   const getCurrentChat = async () => {
