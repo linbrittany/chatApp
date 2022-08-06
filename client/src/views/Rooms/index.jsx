@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { STATUS } from "../../assets/constants";
 import Navbar from "../../components/Navbar";
 import RoomsList from "../../components/RoomsList";
 import { useAuth } from "../../contexts/UserContext";
@@ -12,8 +13,9 @@ import { Button, Error, FormContainer, Input, Label, MainContainer } from "./sty
 const Rooms = () => {
   const { register, formState: {errors}, handleSubmit} = useForm();
   const { login, user } = useAuth();
-  const [currentRoom, setCurrentRoom] = useState(null);
   const [rooms, setRooms] = useState([]);
+  const [currentRoom, setCurrentRoom] = useState(null);
+  const [error, setError] = useState(false);
   const currUser = localStorage.getItem("user");
   const token = localStorage.getItem("token");
   let navigate = useNavigate();
@@ -38,19 +40,29 @@ const Rooms = () => {
     }
   }, []);
 
-  const handleJoin = () => {
+  const handleJoin = (currentRoom) => {
     roomService
       .addUserToRoom({
         roomId: currentRoom.roomId,
         userId: user.userId,
       })
       .then((res) => {
-        res.failure ? handleError(res.status) : navigate("/");
+        res.failure ? handleError(res) : navigate('/');
       });
   };
 
   const onSubmit = (data) => {
-    console.log("hola")
+    setError(false);
+    roomService.createRoom({
+      name: data.roomName,
+      userId: user.userId
+    }).then(res => {
+      if (res.failure) {
+        res.status === STATUS.SERVER_ERROR ? setError(true) : handleError(res);
+      } else {
+        navigate('/');
+      }
+    });
   }
  
   return (
@@ -61,11 +73,13 @@ const Rooms = () => {
           <RoomsList
             rooms={rooms}
             join={true}
-            setter={setCurrentRoom}
-            callback={handleJoin}
+            currentRoom={currentRoom}
+            callback={setCurrentRoom}
+            handleJoin={handleJoin}
           />
           <FormContainer onSubmit={handleSubmit(onSubmit)}>
             <h2>Create Room</h2>
+            {error && <Error>This name has already been taken</Error>}
             <Label>Enter room name:</Label>
             <Input type="text" {...register(
                           "roomName",
@@ -77,7 +91,7 @@ const Rooms = () => {
                           })
                       }/>
             {errors.roomName && <Error>{errors.roomName.message}</Error>}
-            <Button type="submit">Create</Button>
+            <Button>Create</Button>
           </FormContainer>
         </MainContainer>
       </PageContainer>

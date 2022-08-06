@@ -5,7 +5,8 @@ export const STATUS = {
   UNAUTHORIZED: 401,
   FORBIDDEN: 403,
   PAGE_NOT_FOUND: 404,
-  CONFLICT: 409
+  CONFLICT: 409,
+  SERVER_ERROR: 500
 }
 
 export const METHODS = {

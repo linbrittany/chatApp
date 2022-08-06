@@ -24,6 +24,10 @@ const LogoContainer = styled.nav`
   gap: 0.35rem;
   height: fit-content;
   margin-left: 14px;
+
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const NavTitle = styled.h1`
@@ -59,7 +63,7 @@ const Navbar = ({ isAuth }) => {
 
   return (
     <NavContainer>
-      <LogoContainer>
+      <LogoContainer onClick={() => navigate('/')}>
         <NavTitle>BrituChat</NavTitle>
         <Image src={Logo}/>
       </LogoContainer>
@@ -70,6 +74,8 @@ const Navbar = ({ isAuth }) => {
   )
 }
 
-Navbar.propTypes = {};
+Navbar.defaultProps = {
+  isAuth: false,
+};
 
 export default Navbar;

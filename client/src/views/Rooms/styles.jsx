@@ -7,7 +7,7 @@ export const MainContainer = styled.div`
   justify-content: center;
 `;
 
-export const FormContainer = styled.div`
+export const FormContainer = styled.form`
   display: flex;
   flex-direction: column;
   width: 50%;
@@ -21,13 +21,13 @@ export const FormContainer = styled.div`
 
   h2 {
     color: var(--primary);
-    margin-bottom: 1em;
+    margin-bottom: 0.625em;
   }
 `;
 
 export const Label = styled.label`
   color: var(--primary);
-  font-size: 1.25em;
+  font-size: 1.35em;
   margin: 0 0 8px 0;
 `;
 

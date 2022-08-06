@@ -45,7 +45,7 @@ app.use("/v1/rooms/", new RoomRoutes().router);
 //     }
 //   });
 
-//   db.collection('messages').find({}).toArray(function(err, result) {
+//   db.collection('rooms').find({}).toArray(function(err, result) {
 //     if (err) throw err;
 //     console.log(result);
 //   });
