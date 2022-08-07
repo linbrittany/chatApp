@@ -7,39 +7,51 @@ export const MainContainer = styled.div`
   overflow: auto;
   height: 93%;
   &::-webkit-scrollbar {
-    width: 0.2rem;
+    width: 0.25rem;
     &-thumb {
       background-color: #ffffff39;
-      width: 0.1rem;
       border-radius: 1rem;
     }
   }
+
   .message {
     display: flex;
     align-items: center;
     .content {
-      max-width: 40%;
+      max-width: 45%;
       overflow-wrap: break-word;
-      padding: 1rem;
-      font-size: 1.1rem;
-      border-radius: 1rem;
-      color: #d1d1d1;
+      padding: 0.85rem;
+      color: var(--background);
       @media screen and (min-width: 720px) and (max-width: 1080px) {
         max-width: 70%;
       }
     }
-  }
-  .sended {
-    justify-content: flex-end;
-    .content {
-      background-color: #4f04ff21;
+
+    p {
+      font-size: 1rem;
     }
   }
+
+  .sended {
+    justify-content: flex-end;
+    padding-right: 0.5em;
+
+    .content {
+      background-color: var(--primary);
+      border-radius: 20px 20px 3px 20px;
+    }
+  }
+
   .received {
     justify-content: flex-start;
 
     .content {
-      background-color: #9900ff20;
+      background-color: var(--primary);
+      border-radius: 20px 20px 20px 3px;
+
+      h3 {
+        margin-bottom: 0.2em;
+      }
     }
   }
 `;

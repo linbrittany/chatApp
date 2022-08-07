@@ -6,10 +6,23 @@ import { handleError } from "../../handlers/ErrorHandler";
 import { useNavigate } from "react-router-dom";
 
 const Messages = ({ room, socket, user }) => {
-  const [messages, setMessages] = useState([]);
+  // const [messages, setMessages] = useState([]);
   const scrollRef = useRef();
   const [arrivalMessage, setArrivalMessage] = useState(null);
   let navigate = useNavigate();
+
+  const messages = [
+    { userId: "62eac45acf2b9cb98552a02e", name: "user 1", message: "hola" },
+    { userId: "62eac45acf2b9cb98552a02e", name: "user 1", message: "Como estas?" },
+    { userId: "62eac45acf2b9cb98552", name: "user 2", message: "todo bien vos?" },
+    { userId: "62eac45acf2b9cb98552", name: "user 2", message: "todo bien vos?" },
+    { userId: "62eac45acf2b9cb98552", name: "user 2", message: "todo bien vos?" },
+    { userId: "62eac45acf2b9cb98552", name: "user 2", message: "todo bien vos?" },
+    { userId: "62eac45acf2b9cb98552", name: "user 2", message: "todo bien vos?" },
+    { userId: "62eac45acf2b9cb98552", name: "user 2", message: "todo bien vos?" },
+    { userId: "62eac45acf2b9cb98552", name: "user 2", message: "todo bien vos?" },
+    { userId: "62eac45acf2b9cb98552a02e", name: "user 1", message: "holaholaholaholaholaholaholaholaholaholaholaholaholaholaholaholaholaholahola" },
+  ];
 
   useEffect(() => {
     socket.current.emit("USER-CONNECT", room.name, user.userId, room.roomId);
@@ -78,9 +91,12 @@ const Messages = ({ room, socket, user }) => {
         return (
           <div ref={scrollRef} key={uuidv4()}>
             <div
-              className={`message ${message.from.userId === user.userId ? "sended" : "received"}`}
+              className={`message ${
+                message.userId === user.userId ? "sended" : "received"
+              }`}
             >
-              <div className="content ">
+              <div className="content">
+                {message.userId !== user.userId && <h3>{message.name}</h3>}
                 <p>{message.message}</p>
               </div>
             </div>
@@ -89,6 +105,6 @@ const Messages = ({ room, socket, user }) => {
       })}
     </MainContainer>
   );
-}
+};
 
-export default Messages
+export default Messages;

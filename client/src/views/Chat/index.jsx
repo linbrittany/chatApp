@@ -7,7 +7,7 @@ import { ChatContainer, MainContainer, WelcomeContainer } from "./styles";
 import ChatInput from "../../components/ChatInput/index";
 import Messages from "../../components/Messages";
 import Welcome from "../../assets/images/hello.gif";
-import { messageService, roomService } from "../../services";
+import { roomService } from "../../services";
 import { handleError } from "../../handlers/ErrorHandler";
 import { io } from "socket.io-client";
 import { HOST } from "../../assets/constants";
@@ -17,7 +17,6 @@ const Chat = () => {
   const { login, user } = useAuth();
   const [currentRoom, setCurrentRoom] = useState(null);
   const [rooms, setRooms] = useState([]);
-  const [message, setMessages] = useState([]);
   const currUser = localStorage.getItem("user");
   const token = localStorage.getItem("token");
   const socket = useRef();
@@ -51,7 +50,7 @@ const Chat = () => {
       <Navbar isAuth={true} />
       <PageContainer>
         <ChatContainer>
-          <RoomsList rooms={rooms} callback={setCurrentRoom} />
+          <RoomsList rooms={rooms} currentRoom={currentRoom} callback={setCurrentRoom} />
           {user &&
             (currentRoom ? (
               <MainContainer>

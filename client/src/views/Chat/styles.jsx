@@ -39,4 +39,5 @@ export const MainContainer = styled.div`
   flex-direction: column;
   justify-content: space-between;
   padding: 1em;
+  gap: 1em;
 `;

@@ -40,7 +40,8 @@ class MessageController {
       const messages = await this.messageService.getMessagesFromRoom(roomId);
       const formattedMessages = messages.map(msg => {
         return {
-          sender: msg.from.name,
+          name: msg.from.name,
+          userId: msg.from.userId,
           message: msg.message,
           roomId: msg.roomId
         }
