@@ -68,23 +68,32 @@ io.on("connection", (socket) => {
       socketId: socket.id,
       name,
       userId,
-      roomId
+      roomId,
     });
 
     if (error) {
       console.log("error connecting user", error);
     } else {
+      socket.join(roomId);
       console.log("user connected", user);
     }
   });
 
   socket.on("MSG-SEND", (message, roomId, callback) => {
     const user = getUser(socket.id);
-    io.to(roomId).emit('MSG-RECEIVE', {
+    io.sockets.in(roomId).emit("MSG-RECEIVE", {
       name: user.name,
-      roomId: roomId,
-      message: message
+      userId: user.userId,
+      message: message,
+      roomId: roomId
     });
+
+    // io.to(roomId).emit("MSG-RECEIVE", {
+    //   name: user.name,
+    //   userId: user.userId,
+    //   message: message,
+    //   roomId: roomId
+    // });
     callback();
   });
 

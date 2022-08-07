@@ -12,19 +12,18 @@ class MessageController {
   }
 
   addMessage = async (req, res, next) => {
-    const { from, to, text, roomId } = req.body;
+    const { from, text, roomId } = req.body;
 
     try {
-      if (!from || !to || !text || !roomId) throw new GenericException(ERRORS.BAD_REQUEST.PARAMS);
+      if (!from || !text || !roomId) throw new GenericException(ERRORS.BAD_REQUEST.PARAMS);
 
-      const maybeFrom = await this.userService.getUserById(from);
-      const maybeTo = await this.userService.getUserById(to);
-      if (!maybeFrom || !maybeTo) throw new GenericException(ERRORS.NOT_FOUND.USER);
+      const user = await this.userService.getUserById(from.userId);
+      if (!user) throw new GenericException(ERRORS.NOT_FOUND.USER);
 
       const maybeRoom = await this.roomService.getRoomById(roomId);
       if(!maybeRoom) throw new GenericException(ERRORS.NOT_FOUND.ROOM);
 
-      const newMessage = await this.messageService.addMessage(from, to, text, roomId);
+      const newMessage = await this.messageService.addMessage(from, text, roomId);
       return res.status(200).send({ newMessage });
     } catch (error) {
       next(error);
@@ -42,7 +41,7 @@ class MessageController {
         return {
           name: msg.from.name,
           userId: msg.from.userId,
-          message: msg.message,
+          message: msg.text,
           roomId: msg.roomId
         }
       })

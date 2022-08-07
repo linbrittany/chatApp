@@ -4,7 +4,7 @@ import { IoMdSend } from "react-icons/io";
 import { BsEmojiSmileFill } from "react-icons/bs";
 import Picker from "emoji-picker-react";
 
-const ChatInput = () => {
+const ChatInput = ({ handler }) => {
   const [message, setMessage] = useState("");
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
@@ -13,8 +13,16 @@ const ChatInput = () => {
   };
 
   const handleEmojiClick = (event, emojiObject) => {
+    event.preventDefault();
     setMessage(message + emojiObject.emoji);
     setShowEmojiPicker(!showEmojiPicker);
+  };
+
+  const handleSendMessage = (event) => {
+    event.preventDefault();
+    if (message.length > 0) {
+      handler(message, setMessage);
+    }
   };
 
   return (
@@ -25,7 +33,7 @@ const ChatInput = () => {
           {showEmojiPicker && <Picker onEmojiClick={handleEmojiClick}/>}
         </div>
       </EmojiContainer>
-      <InputContainer>
+      <InputContainer onSubmit={handleSendMessage}>
         <input
           type="text"
           placeholder="Type your message here"

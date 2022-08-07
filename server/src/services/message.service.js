@@ -9,8 +9,8 @@ class MessageService {
     return MessageService.instance;
   };
 
-  addMessage = async ( from, to, text, roomId ) => {
-    return await messageModel.create({ from, to, text, roomId });
+  addMessage = async ( from, text, roomId ) => {
+    return await messageModel.create({ from, text, roomId });
   };
 
   getMessagesFromRoom = async (roomId) => {

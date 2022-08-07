@@ -3,6 +3,19 @@ import styled from "styled-components";
 export const MainContainer = styled.div`
   display: flex;
   flex-direction: column;
+  width: 70%;
+  height: 100%;
+  border-top-right-radius: 0.625em;
+  background-color: var(--secondary);
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1em;
+  gap: 1em;
+`;
+
+export const Messages = styled.div`
+  display: flex;
+  flex-direction: column;
   gap: 1rem;
   overflow: auto;
   height: 93%;

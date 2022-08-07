@@ -3,15 +3,14 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "../../components/Navbar";
 import { useAuth } from "../../contexts/UserContext";
 import { Page, PageContainer } from "../../GlobalStyles";
-import { ChatContainer, MainContainer, WelcomeContainer } from "./styles";
-import ChatInput from "../../components/ChatInput/index";
-import Messages from "../../components/Messages";
+import { ChatContainer, WelcomeContainer } from "./styles";
 import Welcome from "../../assets/images/hello.gif";
 import { roomService } from "../../services";
 import { handleError } from "../../handlers/ErrorHandler";
 import { io } from "socket.io-client";
 import { HOST } from "../../assets/constants";
 import RoomsList from "../../components/RoomsList";
+import ChatCointainer from "../../components/ChatContainer";
 
 const Chat = () => {
   const { login, user } = useAuth();
@@ -53,10 +52,7 @@ const Chat = () => {
           <RoomsList rooms={rooms} currentRoom={currentRoom} callback={setCurrentRoom} />
           {user &&
             (currentRoom ? (
-              <MainContainer>
-                <Messages room={currentRoom} socket={socket} user={user} />
-                <ChatInput />
-              </MainContainer>
+              <ChatCointainer room={currentRoom} socket={socket} user={user} />
             ) : (
               <WelcomeContainer>
                 <img src={Welcome} alt="welcome gif" />

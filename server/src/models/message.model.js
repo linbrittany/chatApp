@@ -11,16 +11,6 @@ const MessageSchema = new mongoose.Schema({
             required: true
         }
     },
-    to: {
-        name: {
-            type: String,
-            required: true
-        },
-        userId: {
-            type: String,
-            required: true
-        }
-    },
     text: {
         type: String,
         required: true
