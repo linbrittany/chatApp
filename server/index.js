@@ -81,19 +81,17 @@ io.on("connection", (socket) => {
 
   socket.on("MSG-SEND", (message, roomId, callback) => {
     const user = getUser(socket.id);
-    io.sockets.in(roomId).emit("MSG-RECEIVE", {
-      name: user.name,
-      userId: user.userId,
-      message: message,
-      roomId: roomId
-    });
+    if (user) {
+      io.sockets.in(roomId).emit("MSG-RECEIVE", {
+        name: user.name,
+        userId: user.userId,
+        message: message,
+        roomId: roomId,
+      });
+    } else {
+      console.log("error sending message", user);
+    }
 
-    // io.to(roomId).emit("MSG-RECEIVE", {
-    //   name: user.name,
-    //   userId: user.userId,
-    //   message: message,
-    //   roomId: roomId
-    // });
     callback();
   });
 
